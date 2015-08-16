@@ -209,6 +209,7 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
+            '<%= yeoman.dist %>/resources/*.json',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
@@ -239,6 +240,7 @@ module.exports = function (grunt) {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
+      resrc: ['<%= yeoman.dist %>/resources/{,*/}*.json'],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>',
@@ -381,19 +383,27 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
-      }
+      },
+        resources: {
+            expand: true,
+            cwd: '<%= yeoman.app %>/resources',
+            dest: '.tmp/resources/',
+            src: '{,*/}*.json'
+        }
     },
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'copy:styles'
+        'copy:styles',
+          'copy:resources'
       ],
       test: [
         'copy:styles'
       ],
       dist: [
         'copy:styles',
+          'copy:resources',
         'imagemin',
         'svgmin'
       ]
